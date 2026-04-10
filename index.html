@@ -248,7 +248,7 @@ section { padding: 7rem 3rem; }
 /* ─── AMENITIES ─── */
 .amenities { max-width: 1300px; margin: 0 auto; }
 .amenities-grid {
-  display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  display: grid; grid-template-columns: repeat(4, 1fr);
   gap: 2.5rem; margin-top: 3rem;
 }
 .amenity-card {
@@ -268,7 +268,7 @@ section { padding: 7rem 3rem; }
 /* ─── ATTRACTIONS (CARD GRID) ─── */
 .attractions { max-width: 1300px; margin: 0 auto; }
 .attractions-grid {
-  display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  display: grid; grid-template-columns: repeat(3, 1fr);
   gap: 2rem; margin-top: 3rem;
 }
 .attraction-card {
@@ -296,7 +296,7 @@ section { padding: 7rem 3rem; }
 .dining { background: #f5f2ee; }
 .dining-inner { max-width: 1300px; margin: 0 auto; }
 .dining-list {
-  display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  display: grid; grid-template-columns: repeat(4, 1fr);
   gap: 2rem; margin-top: 3rem;
 }
 .dining-card { background: #fff; padding: 2.5rem; border-radius: 2px; transition: box-shadow .3s; }
@@ -540,7 +540,7 @@ section { padding: 7rem 3rem; }
 /* ─── GETTING HERE ─── */
 .getting-here { max-width: 1300px; margin: 0 auto; }
 .travel-grid {
-  display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  display: grid; grid-template-columns: repeat(4, 1fr);
   gap: 2rem; margin-top: 3rem;
 }
 .travel-card {
@@ -655,6 +655,10 @@ section { padding: 7rem 3rem; }
   .g6 { grid-column: 1/-1; grid-row: auto; aspect-ratio: 16/9; }
   .g7 { grid-column: 1/-1; grid-row: auto; aspect-ratio: 16/9; }
 
+  .amenities-grid { grid-template-columns: repeat(2, 1fr); gap: 1.5rem; }
+  .attractions-grid { grid-template-columns: repeat(2, 1fr); }
+  .dining-list { grid-template-columns: 1fr; }
+  .travel-grid { grid-template-columns: repeat(2, 1fr); }
   .map-section { height: auto; min-height: auto; flex-direction: column; }
   .map-sidebar {
     position: relative; width: 100%; height: auto;
@@ -825,7 +829,7 @@ section { padding: 7rem 3rem; }
         </div>
       </article>
       <article class="attraction-card reveal reveal-delay-1">
-        <img src="https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=800&q=80" alt="">
+        <img src="https://images.unsplash.com/photo-1585320806297-9794b3e4eeae?w=800&q=80" alt="">
         <div class="attraction-overlay">
           <span class="attraction-tag">Art &amp; Gardens</span>
           <h3 class="attraction-name">LongHouse Reserve</h3>
@@ -849,7 +853,7 @@ section { padding: 7rem 3rem; }
         </div>
       </article>
       <article class="attraction-card reveal reveal-delay-1">
-        <img src="https://images.unsplash.com/photo-1474511320723-9a56873571b7?w=800&q=80" alt="">
+        <img src="https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=800&q=80" alt="">
         <div class="attraction-overlay">
           <span class="attraction-tag">Nature</span>
           <h3 class="attraction-name">Cedar Point County Park</h3>
