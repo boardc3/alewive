@@ -82,7 +82,7 @@ body {
     scroll-behavior: auto !important;
   }
   html { scroll-behavior: auto; }
-  .hero-img { transform: none !important; transition: none !important; }
+  .hero-video { display: none; }
   .reveal { opacity: 1 !important; transform: none !important; transition: none !important; }
 }
 
@@ -132,22 +132,13 @@ body {
 /* ─── HERO ─── */
 .hero {
   position: relative; height: 100vh; min-height: 700px; overflow: hidden;
+  background: #0d0d0d;
 }
-.hero-img {
-  position: absolute; inset: 0;
-  background: url('stills/frame_014.jpg') center/cover no-repeat;
-  transform: scale(1.08);
-  transition: transform 10s cubic-bezier(.25,.46,.45,.94);
-}
-.hero.visible .hero-img { transform: scale(1); }
 .hero-video {
-  position: absolute; inset: 0; z-index: 1;
+  position: absolute; inset: 0;
   width: 100%; height: 100%;
   object-fit: cover;
-  opacity: 0;
-  transition: opacity 1.2s ease;
 }
-.hero-video.playing { opacity: 1; }
 .hero-overlay {
   position: absolute; inset: 0; z-index: 2;
   background: linear-gradient(to bottom, rgba(0,0,0,.35) 0%, rgba(0,0,0,.15) 35%, rgba(0,0,0,.6) 100%);
@@ -705,7 +696,6 @@ section { padding: 7rem 3rem; }
 
 <!-- HERO -->
 <section class="hero" id="hero" aria-label="Property hero">
-  <div class="hero-img" role="img" aria-label="Night view of 26 Alewive Brook Road with illuminated pool and string lights"></div>
   <video class="hero-video" id="heroVideo"
     autoplay muted playsinline loop preload="auto"
     aria-hidden="true"
@@ -1245,25 +1235,12 @@ requestAnimationFrame(() => {
   document.querySelector('.hero').classList.add('visible');
 });
 
-// Hero video: fade in over the still image once it starts playing
+// Ensure hero video plays (belt-and-suspenders with autoplay attribute)
 const heroVideo = document.getElementById('heroVideo');
 if (heroVideo && !prefersReducedMotion) {
-  heroVideo.addEventListener('playing', () => {
-    heroVideo.classList.add('playing');
-  }, { once: true });
-
-  if (heroVideo.paused) {
-    heroVideo.play().catch(() => {});
-  }
-
-  heroVideo.addEventListener('error', () => {
-    heroVideo.style.display = 'none';
-  });
+  heroVideo.play().catch(() => {});
 } else if (heroVideo) {
   heroVideo.pause();
-  heroVideo.removeAttribute('src');
-  heroVideo.load();
-  heroVideo.style.display = 'none';
 }
 
 const reveals = document.querySelectorAll('.reveal');
