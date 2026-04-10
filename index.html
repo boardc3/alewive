@@ -707,7 +707,7 @@ section { padding: 7rem 3rem; }
 <section class="hero" id="hero" aria-label="Property hero">
   <div class="hero-img" role="img" aria-label="Night view of 26 Alewive Brook Road with illuminated pool and string lights"></div>
   <video class="hero-video" id="heroVideo"
-    muted playsinline loop preload="auto"
+    autoplay muted playsinline loop preload="auto"
     aria-hidden="true"
     poster="stills/frame_014.jpg">
     <source src="hero-video.mp4" type="video/mp4">
@@ -1239,31 +1239,32 @@ window.addEventListener('scroll', () => {
   nav.classList.toggle('scrolled', window.scrollY > 80);
 });
 
+const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
 requestAnimationFrame(() => {
   document.querySelector('.hero').classList.add('visible');
 });
 
-// Hero video: fade in over the still image once the video can play
+// Hero video: fade in over the still image once it starts playing
 const heroVideo = document.getElementById('heroVideo');
 if (heroVideo && !prefersReducedMotion) {
-  function tryPlayVideo() {
-    heroVideo.play().then(() => {
-      heroVideo.classList.add('playing');
-    }).catch(() => {});
+  heroVideo.addEventListener('playing', () => {
+    heroVideo.classList.add('playing');
+  }, { once: true });
+
+  if (heroVideo.paused) {
+    heroVideo.play().catch(() => {});
   }
-  if (heroVideo.readyState >= 3) {
-    tryPlayVideo();
-  } else {
-    heroVideo.addEventListener('canplay', tryPlayVideo, { once: true });
-  }
+
   heroVideo.addEventListener('error', () => {
     heroVideo.style.display = 'none';
   });
 } else if (heroVideo) {
+  heroVideo.pause();
+  heroVideo.removeAttribute('src');
+  heroVideo.load();
   heroVideo.style.display = 'none';
 }
-
-const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 const reveals = document.querySelectorAll('.reveal');
 if (prefersReducedMotion) {
