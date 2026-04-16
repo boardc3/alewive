@@ -7,8 +7,6 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <style>
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -264,33 +262,6 @@ section { padding: 7rem 3rem; }
   width: 100%; height: 65vh; min-height: 380px; object-fit: cover; display: block;
 }
 
-/* ─── ATTRACTIONS (CARD GRID) ─── */
-.attractions { max-width: 1300px; margin: 0 auto; }
-.attractions-grid {
-  display: grid; grid-template-columns: repeat(3, 1fr);
-  gap: 2rem; margin-top: 3rem;
-}
-.attraction-card {
-  position: relative; border-radius: 2px; overflow: hidden;
-  aspect-ratio: 4/3;
-}
-.attraction-card img {
-  width: 100%; height: 100%; object-fit: cover; transition: transform .6s;
-}
-.attraction-card:hover img { transform: scale(1.05); }
-.attraction-overlay {
-  position: absolute; inset: 0;
-  background: linear-gradient(to top, rgba(0,0,0,.78) 0%, rgba(0,0,0,.15) 45%, transparent 65%);
-  display: flex; flex-direction: column; justify-content: flex-end; padding: 2rem;
-}
-.attraction-tag {
-  font-size: .6rem; font-weight: 700;
-  letter-spacing: .2em; text-transform: uppercase;
-  color: var(--gold-on-dark); margin-bottom: .35rem;
-}
-.attraction-name { font-family: var(--serif); font-size: 1.45rem; font-weight: 500; color: #fff; }
-.attraction-dist { font-size: .8rem; color: rgba(255,255,255,.8); margin-top: .25rem; font-weight: 400; }
-
 /* ─── DINING ─── */
 .dining { background: #f5f2ee; }
 .dining-inner { max-width: 1300px; margin: 0 auto; }
@@ -307,234 +278,6 @@ section { padding: 7rem 3rem; }
   color: var(--gold-text); margin-bottom: .9rem; display: block;
 }
 .dining-desc { font-size: .88rem; line-height: 1.7; color: var(--body-text); font-weight: 400; }
-
-/* ══════════════════════════════════════════════
-   INTERACTIVE MAP
-   ══════════════════════════════════════════════ */
-.map-section {
-  position: relative;
-  height: 100vh;
-  min-height: 650px;
-  background: var(--deep);
-}
-.map-section .section-header {
-  position: absolute; top: 0; left: 0; right: 0; z-index: 10;
-  padding: 2.5rem 3rem 0;
-  pointer-events: none;
-}
-.map-section .section-eyebrow { color: var(--gold-on-dark); }
-.map-section .section-title { color: #fff; margin-bottom: .5rem; }
-
-/* sidebar */
-.map-sidebar {
-  position: absolute; top: 0; left: 0; bottom: 0; z-index: 10;
-  width: 380px;
-  background: linear-gradient(135deg, rgba(18,18,18,.97), rgba(24,22,20,.97));
-  backdrop-filter: blur(30px);
-  display: flex; flex-direction: column;
-  border-right: 1px solid rgba(255,255,255,.08);
-  overflow: hidden;
-}
-.map-sidebar-header {
-  padding: 2rem 2rem 1.5rem;
-  border-bottom: 1px solid rgba(255,255,255,.08);
-  flex-shrink: 0;
-}
-.map-sidebar-title {
-  font-family: var(--serif);
-  font-size: 1.6rem; font-weight: 400; color: #fff;
-  margin-bottom: .3rem;
-}
-.map-sidebar-sub {
-  font-size: .75rem; color: rgba(255,255,255,.7);
-  letter-spacing: .05em; font-weight: 400;
-}
-
-/* category filters */
-.map-filters {
-  display: flex; gap: .5rem; padding: 1rem 2rem;
-  flex-wrap: wrap; flex-shrink: 0;
-  border-bottom: 1px solid rgba(255,255,255,.08);
-}
-.map-filter-btn {
-  font-family: var(--sans);
-  font-size: .65rem; font-weight: 500;
-  letter-spacing: .1em; text-transform: uppercase;
-  color: rgba(255,255,255,.75);
-  background: rgba(255,255,255,.06);
-  border: 1px solid rgba(255,255,255,.12);
-  border-radius: 100px;
-  padding: .45rem 1rem;
-  cursor: pointer;
-  transition: all .3s;
-}
-.map-filter-btn:hover, .map-filter-btn:focus-visible {
-  color: #fff;
-  border-color: rgba(255,255,255,.3);
-  background: rgba(255,255,255,.1);
-}
-.map-filter-btn.active {
-  color: var(--deep);
-  background: var(--gold);
-  border-color: var(--gold);
-  font-weight: 600;
-}
-
-/* POI list */
-.map-poi-list {
-  flex: 1; overflow-y: auto; padding: .5rem 0;
-  scrollbar-width: thin;
-  scrollbar-color: rgba(255,255,255,.15) transparent;
-}
-.map-poi-list::-webkit-scrollbar { width: 4px; }
-.map-poi-list::-webkit-scrollbar-track { background: transparent; }
-.map-poi-list::-webkit-scrollbar-thumb { background: rgba(255,255,255,.15); border-radius: 2px; }
-
-.map-poi-item {
-  display: flex; align-items: center; gap: 1rem;
-  padding: 1rem 2rem;
-  cursor: pointer;
-  transition: background .3s;
-  border-left: 3px solid transparent;
-}
-.map-poi-item:hover, .map-poi-item:focus-visible { background: rgba(255,255,255,.06); }
-.map-poi-item.active {
-  background: rgba(255,255,255,.08);
-  border-left-color: var(--gold);
-}
-.map-poi-dot {
-  width: 10px; height: 10px;
-  border-radius: 50%; flex-shrink: 0;
-  box-shadow: 0 0 0 3px rgba(255,255,255,.08);
-}
-.map-poi-info { flex: 1; min-width: 0; }
-.map-poi-name {
-  font-family: var(--serif);
-  font-size: 1rem; font-weight: 400; color: #fff;
-  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-}
-.map-poi-meta {
-  font-size: .68rem; color: rgba(255,255,255,.7);
-  margin-top: .15rem; font-weight: 400;
-}
-.map-poi-drive {
-  font-size: .62rem; color: rgba(255,255,255,.7);
-  font-weight: 500; flex-shrink: 0;
-  background: rgba(255,255,255,.06);
-  padding: .25rem .6rem; border-radius: 100px;
-}
-
-/* leaflet map container */
-#map {
-  position: absolute; top: 0; right: 0; bottom: 0;
-  left: 380px;
-  z-index: 5;
-}
-
-/* Custom markers */
-.marker-property {
-  width: 24px; height: 24px;
-  background: var(--gold);
-  border: 3px solid #fff;
-  border-radius: 50%;
-  box-shadow: 0 2px 12px rgba(0,0,0,.3), 0 0 0 0 rgba(184,155,106,.4);
-  animation: markerPulse 2s infinite;
-  cursor: pointer;
-}
-@keyframes markerPulse {
-  0% { box-shadow: 0 2px 12px rgba(0,0,0,.3), 0 0 0 0 rgba(184,155,106,.5); }
-  70% { box-shadow: 0 2px 12px rgba(0,0,0,.3), 0 0 0 18px rgba(184,155,106,0); }
-  100% { box-shadow: 0 2px 12px rgba(0,0,0,.3), 0 0 0 0 rgba(184,155,106,0); }
-}
-.marker-poi {
-  width: 14px; height: 14px;
-  border-radius: 50%;
-  border: 2.5px solid #fff;
-  box-shadow: 0 2px 8px rgba(0,0,0,.25);
-  cursor: pointer;
-  transition: transform .3s, box-shadow .3s;
-}
-.marker-poi:hover { transform: scale(1.3); }
-.marker-poi.cat-beach { background: var(--beach); }
-.marker-poi.cat-culture { background: var(--culture); }
-.marker-poi.cat-dining { background: var(--dining); }
-.marker-poi.cat-nature { background: var(--nature); }
-.marker-poi.cat-wine { background: var(--wine); }
-.marker-poi.cat-transport { background: var(--transport); }
-
-/* Custom popup */
-.leaflet-popup-content-wrapper {
-  background: rgba(20,20,20,.96) !important;
-  backdrop-filter: blur(20px);
-  border-radius: 6px !important;
-  box-shadow: 0 12px 40px rgba(0,0,0,.4) !important;
-  padding: 0 !important;
-  overflow: hidden;
-  border: 1px solid rgba(255,255,255,.1);
-}
-.leaflet-popup-tip { background: rgba(20,20,20,.96) !important; }
-.leaflet-popup-content { margin: 0 !important; width: 280px !important; }
-.popup-inner { padding: 1.2rem 1.4rem; }
-.popup-cat {
-  font-size: .6rem; font-weight: 700;
-  letter-spacing: .18em; text-transform: uppercase;
-  margin-bottom: .4rem;
-}
-.popup-name {
-  font-family: var(--serif);
-  font-size: 1.2rem; font-weight: 500;
-  color: #fff; margin-bottom: .4rem;
-}
-.popup-desc {
-  font-size: .8rem; line-height: 1.6;
-  color: rgba(255,255,255,.78); font-weight: 400;
-}
-.popup-drive {
-  display: inline-flex; align-items: center; gap: .4rem;
-  margin-top: .7rem;
-  font-size: .68rem; color: rgba(255,255,255,.75);
-  font-weight: 500;
-  background: rgba(255,255,255,.08);
-  padding: .3rem .7rem; border-radius: 100px;
-}
-.popup-drive svg {
-  width: 12px; height: 12px;
-  stroke: rgba(255,255,255,.75); fill: none; stroke-width: 1.5;
-}
-
-/* leaflet controls restyle */
-.leaflet-control-zoom a {
-  background: rgba(20,20,20,.9) !important;
-  color: #fff !important;
-  border: 1px solid rgba(255,255,255,.15) !important;
-  backdrop-filter: blur(10px);
-}
-.leaflet-control-zoom a:hover {
-  background: rgba(40,40,40,.95) !important;
-}
-.leaflet-control-zoom { border: none !important; }
-.leaflet-control-attribution { display: none !important; }
-
-/* back to property button on map */
-.map-home-btn {
-  position: absolute; bottom: 2rem; right: 2rem; z-index: 10;
-  font-family: var(--sans);
-  font-size: .68rem; font-weight: 500;
-  letter-spacing: .1em; text-transform: uppercase;
-  color: #fff;
-  background: rgba(20,20,20,.9);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255,255,255,.15);
-  border-radius: 100px;
-  padding: .7rem 1.4rem;
-  cursor: pointer;
-  transition: all .3s;
-}
-.map-home-btn:hover, .map-home-btn:focus-visible {
-  background: var(--gold);
-  border-color: var(--gold);
-  color: var(--deep);
-}
 
 /* ─── GETTING HERE ─── */
 .getting-here { max-width: 1300px; margin: 0 auto; }
@@ -655,18 +398,8 @@ section { padding: 7rem 3rem; }
   .g7 { grid-column: 1/-1; grid-row: auto; aspect-ratio: 16/9; }
 
   .amenities-grid { grid-template-columns: repeat(2, 1fr); gap: 1.5rem; }
-  .attractions-grid { grid-template-columns: repeat(2, 1fr); }
   .dining-list { grid-template-columns: 1fr; }
   .travel-grid { grid-template-columns: repeat(2, 1fr); }
-  .map-section { height: auto; min-height: auto; flex-direction: column; }
-  .map-sidebar {
-    position: relative; width: 100%; height: auto;
-    max-height: none; border-right: none;
-    border-bottom: 1px solid rgba(255,255,255,.08);
-  }
-  .map-poi-list { max-height: 250px; }
-  #map { position: relative; left: 0; height: 60vh; min-height: 400px; }
-  .map-home-btn { bottom: 1rem; right: 1rem; }
   .footer { flex-direction: column; text-align: center; }
 }
 </style>
@@ -683,9 +416,8 @@ section { padding: 7rem 3rem; }
     <li><a href="#property">Residence</a></li>
     <li><a href="#gallery">Gallery</a></li>
     <li><a href="#amenities">Amenities</a></li>
-    <li><a href="#explore">Explore</a></li>
     <li><a href="#dining">Dining</a></li>
-    <li><a href="#map-section">Map</a></li>
+    <li><a href="#getting-here">Getting Here</a></li>
   </ul>
   <button class="hamburger" aria-label="Open navigation menu" aria-expanded="false">
     <span aria-hidden="true"></span><span aria-hidden="true"></span><span aria-hidden="true"></span>
@@ -814,68 +546,6 @@ section { padding: 7rem 3rem; }
 <!-- IMAGE BREAK -->
 <img class="img-break" src="stills/frame_005.jpg" alt="Couple biking together along the stone driveway in front of the house on a sunny day" role="presentation">
 
-<!-- LOCAL ATTRACTIONS -->
-<section id="explore" aria-label="Local attractions">
-  <div class="attractions">
-    <span class="section-eyebrow reveal">Explore East Hampton</span>
-    <h2 class="section-title reveal">World-Class Culture at Your Doorstep</h2>
-    <p class="section-body reveal">
-      From pristine Atlantic beaches to sculpture gardens and historic landmarks,
-      East Hampton offers the best of coastal New York living.
-    </p>
-    <div class="attractions-grid">
-      <article class="attraction-card reveal">
-        <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800&q=80" alt="">
-        <div class="attraction-overlay">
-          <span class="attraction-tag">Beach</span>
-          <h3 class="attraction-name">Main Beach</h3>
-          <p class="attraction-dist">4 miles &middot; 10 min drive</p>
-        </div>
-      </article>
-      <article class="attraction-card reveal reveal-delay-1">
-        <img src="https://images.unsplash.com/photo-1585320806297-9794b3e4eeae?w=800&q=80" alt="">
-        <div class="attraction-overlay">
-          <span class="attraction-tag">Art &amp; Gardens</span>
-          <h3 class="attraction-name">LongHouse Reserve</h3>
-          <p class="attraction-dist">16-acre sculpture garden &middot; 5 min</p>
-        </div>
-      </article>
-      <article class="attraction-card reveal reveal-delay-2">
-        <img src="https://images.unsplash.com/photo-1580137189272-c9379f8864fd?w=800&q=80" alt="">
-        <div class="attraction-overlay">
-          <span class="attraction-tag">Landmark</span>
-          <h3 class="attraction-name">Montauk Point Lighthouse</h3>
-          <p class="attraction-dist">Historic 1796 lighthouse &middot; 30 min</p>
-        </div>
-      </article>
-      <article class="attraction-card reveal">
-        <img src="https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?w=800&q=80" alt="">
-        <div class="attraction-overlay">
-          <span class="attraction-tag">Culture</span>
-          <h3 class="attraction-name">Guild Hall</h3>
-          <p class="attraction-dist">Theater, gallery &amp; museum &middot; 8 min</p>
-        </div>
-      </article>
-      <article class="attraction-card reveal reveal-delay-1">
-        <img src="https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=800&q=80" alt="">
-        <div class="attraction-overlay">
-          <span class="attraction-tag">Nature</span>
-          <h3 class="attraction-name">Cedar Point County Park</h3>
-          <p class="attraction-dist">Hiking, kayaking &amp; bay views &middot; 10 min</p>
-        </div>
-      </article>
-      <article class="attraction-card reveal reveal-delay-2">
-        <img src="https://images.unsplash.com/photo-1541961017774-22349e4a1262?w=800&q=80" alt="">
-        <div class="attraction-overlay">
-          <span class="attraction-tag">Art History</span>
-          <h3 class="attraction-name">Pollock-Krasner House</h3>
-          <p class="attraction-dist">Studio &amp; study center &middot; 5 min</p>
-        </div>
-      </article>
-    </div>
-  </div>
-</section>
-
 <!-- DINING -->
 <section class="dining" id="dining" aria-label="Dining recommendations">
   <div class="dining-inner">
@@ -913,32 +583,6 @@ section { padding: 7rem 3rem; }
 <!-- IMAGE BREAK -->
 <img class="img-break" src="stills/frame_016.jpg" alt="Guests socializing with cocktails on the covered deck in the evening" role="presentation">
 
-<!-- INTERACTIVE MAP -->
-<section class="map-section" id="map-section" aria-label="Interactive map of nearby attractions">
-  <div class="map-sidebar" role="region" aria-label="Points of interest list">
-    <div class="map-sidebar-header">
-      <h2 class="map-sidebar-title">Explore the Area</h2>
-      <p class="map-sidebar-sub">Select any location to fly there on the map</p>
-    </div>
-    <div class="map-filters" id="mapFilters" role="toolbar" aria-label="Filter by category">
-      <button class="map-filter-btn active" data-cat="all" aria-pressed="true">All</button>
-      <button class="map-filter-btn" data-cat="beach" aria-pressed="false">Beaches</button>
-      <button class="map-filter-btn" data-cat="culture" aria-pressed="false">Culture</button>
-      <button class="map-filter-btn" data-cat="dining" aria-pressed="false">Dining</button>
-      <button class="map-filter-btn" data-cat="nature" aria-pressed="false">Nature</button>
-      <button class="map-filter-btn" data-cat="wine" aria-pressed="false">Wine</button>
-    </div>
-    <div class="map-poi-list" id="poiList" role="listbox" aria-label="Locations"></div>
-  </div>
-
-  <div id="map" role="application" aria-label="Map showing property location and nearby points of interest"></div>
-
-  <button class="map-home-btn" id="mapHomeBtn" aria-label="Return map view to the property">
-    <svg style="width:12px;height:12px;vertical-align:-1px;margin-right:6px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-4 0v-4m0 4h4"/></svg>
-    Back to Property
-  </button>
-</section>
-
 <!-- GETTING HERE -->
 <section id="getting-here" aria-label="Transportation options">
   <div class="getting-here">
@@ -974,7 +618,11 @@ section { padding: 7rem 3rem; }
   <span class="section-eyebrow reveal">Inquire</span>
   <h2 class="section-title reveal">Begin Your East Hampton Story</h2>
   <p class="section-body reveal">Schedule a private tour of 26 Alewive Brook Road and discover what it means to live where architecture meets nature.</p>
-  <a href="mailto:info@example.com" class="cta-btn reveal reveal-delay-2">Request Information</a>
+  <p class="section-body reveal" style="margin-top:1.5rem; color: rgba(255,255,255,.85);">
+    <strong>Richard Mike Moran</strong> &middot; Real Estate Sales Person<br>
+    Douglas Elliman Real Estate &middot; <a href="tel:+12125791919" style="color: var(--gold-on-dark); text-decoration: none;">(212) 579-1919</a>
+  </p>
+  <a href="mailto:mike.moran@elliman.com" class="cta-btn reveal reveal-delay-2">Request Information</a>
 </section>
 
 </main>
@@ -985,7 +633,7 @@ section { padding: 7rem 3rem; }
     <div class="footer-brand">26 Alewive Brook Road</div>
     <p class="footer-copy" style="margin-top:.4rem;">East Hampton, NY 11937</p>
   </div>
-  <p class="footer-copy">&copy; 2026 All rights reserved. Listing by Compass.</p>
+  <p class="footer-copy">&copy; 2026 All rights reserved. Listing by Douglas Elliman Real Estate &middot; Richard Mike Moran &middot; (212) 579-1919</p>
 </footer>
 
 <!-- LIGHTBOX -->
@@ -998,229 +646,6 @@ section { padding: 7rem 3rem; }
 </div>
 
 <script>
-/* ═══════════════════════════════════════
-   POI DATA
-   ═══════════════════════════════════════ */
-const PROPERTY = { lat: 41.0167, lng: -72.2134, name: '26 Alewive Brook Rd' };
-
-const POIS = [
-  { id: 'main-beach',     cat: 'beach',   name: 'Main Beach',              lat: 40.9440, lng: -72.1860, drive: '10 min', desc: 'Miles of pristine white sand and crystal-clear Atlantic waters. Swimming, surfing, and legendary sunsets.' },
-  { id: 'two-mile',       cat: 'beach',   name: 'Two Mile Hollow Beach',   lat: 40.9450, lng: -72.2100, drive: '8 min',  desc: 'A quieter stretch of sand popular with locals. Beautiful dunes and excellent swimming conditions.' },
-  { id: 'georgica',       cat: 'beach',   name: 'Georgica Beach',          lat: 40.9405, lng: -72.2340, drive: '12 min', desc: 'Exclusive oceanfront beach near Georgica Pond. Calm waters and stunning views of the coastline.' },
-  { id: 'longhouse',      cat: 'culture', name: 'LongHouse Reserve',       lat: 40.9812, lng: -72.2034, drive: '5 min',  desc: '16-acre sculpture garden and art reserve founded by textile designer Jack Lenor Larsen. Contemporary art amid lush gardens.' },
-  { id: 'guild-hall',     cat: 'culture', name: 'Guild Hall',              lat: 40.9578, lng: -72.1903, drive: '8 min',  desc: 'East Hampton\'s iconic cultural center since 1931. Three galleries, the John Drew Theater, and world-class exhibitions.' },
-  { id: 'pollock',        cat: 'culture', name: 'Pollock-Krasner House',   lat: 41.0236, lng: -72.1553, drive: '5 min',  desc: 'The studio and home of Jackson Pollock and Lee Krasner on Accabonac Creek. A pilgrimage for art lovers.' },
-  { id: 'nick-tonis',     cat: 'dining',  name: "Nick & Toni's",           lat: 40.9640, lng: -72.1870, drive: '8 min',  desc: 'Tuscan farmhouse cuisine for 37+ years. Wood-fired oven, organic garden, and the quintessential Hamptons dinner.' },
-  { id: 'sant-ambroeus',  cat: 'dining',  name: 'Sant Ambroeus',           lat: 40.9635, lng: -72.1855, drive: '8 min',  desc: 'Milanese elegance on Main Street. Impeccable pasta, branzino, and what may be Long Island\'s best espresso.' },
-  { id: 'swiftys',        cat: 'dining',  name: "Swifty's at The Hedges",  lat: 40.9585, lng: -72.1895, drive: '9 min',  desc: 'Garden dining at The Hedges Inn. Maryland crab cakes, chilled lobster, and old-school Hamptons charm.' },
-  { id: 'si-si',          cat: 'dining',  name: 'Si Si at EHP Resort',     lat: 40.9900, lng: -72.1630, drive: '12 min', desc: 'Sunset Mediterranean dining at the marina. Rosé, fresh seafood, and boats bobbing in the harbor.' },
-  { id: 'cedar-point',    cat: 'nature',  name: 'Cedar Point County Park', lat: 41.0177, lng: -72.2367, drive: '6 min',  desc: '607 acres of hiking trails, kayaking, and the historic Cedar Point Lighthouse (1868). Osprey nesting grounds.' },
-  { id: 'montauk',        cat: 'nature',  name: 'Montauk Point Lighthouse',lat: 41.0710, lng: -71.8573, drive: '30 min', desc: 'The iconic 1796 lighthouse at the eastern tip of Long Island. Whale watching, seal viewing, and dramatic cliffs.' },
-  { id: 'walking-dunes',  cat: 'nature',  name: 'Walking Dunes Trail',     lat: 41.0480, lng: -72.0920, drive: '18 min', desc: 'Rare parabolic sand dunes slowly migrating through forest. One of Long Island\'s most unique natural wonders.' },
-  { id: 'wolffer',        cat: 'wine',    name: 'Wölffer Estate Vineyard', lat: 40.9295, lng: -72.2605, drive: '15 min', desc: 'Premier Hamptons winery on 55 acres. Award-winning rosé, tastings, and the beloved Friday sunset concert series.' },
-  { id: 'channing',       cat: 'wine',    name: 'Channing Daughters',      lat: 40.9180, lng: -72.2890, drive: '18 min', desc: 'Boutique winery with experimental blends and a sculpture-filled garden. Their orange wines are exceptional.' },
-];
-
-const CAT_COLORS = {
-  beach: '#2E9BDA', culture: '#9B59B6', dining: '#E67E22',
-  nature: '#27AE60', wine: '#8E44AD', transport: '#7F8C8D',
-};
-
-const CAT_LABELS = {
-  beach: 'Beach', culture: 'Culture', dining: 'Dining',
-  nature: 'Nature', wine: 'Wine', transport: 'Transport',
-};
-
-/* ═══════════════════════════════════════
-   MAP INIT
-   ═══════════════════════════════════════ */
-const map = L.map('map', {
-  center: [PROPERTY.lat, PROPERTY.lng],
-  zoom: 12,
-  zoomControl: true,
-  attributionControl: false,
-  keyboard: true,
-});
-
-L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
-  maxZoom: 18,
-}).addTo(map);
-
-const propIcon = L.divIcon({
-  className: '',
-  html: '<div class="marker-property" role="img" aria-label="26 Alewive Brook Road property location"></div>',
-  iconSize: [24, 24],
-  iconAnchor: [12, 12],
-});
-const propMarker = L.marker([PROPERTY.lat, PROPERTY.lng], {
-  icon: propIcon, zIndexOffset: 1000,
-  alt: '26 Alewive Brook Road',
-}).addTo(map);
-propMarker.bindPopup(`
-  <div class="popup-inner">
-    <div class="popup-cat" style="color:var(--gold-on-dark)">Your Residence</div>
-    <div class="popup-name">26 Alewive Brook Road</div>
-    <div class="popup-desc">5 bed &middot; 6 bath &middot; 4,250 sq ft &middot; 1.5 acres<br>Net Zero &middot; Saltwater Pool &middot; Built 2022</div>
-  </div>
-`);
-
-const poiMarkers = {};
-
-POIS.forEach(poi => {
-  const icon = L.divIcon({
-    className: '',
-    html: `<div class="marker-poi cat-${poi.cat}" role="img" aria-label="${poi.name}"></div>`,
-    iconSize: [14, 14],
-    iconAnchor: [7, 7],
-  });
-
-  const marker = L.marker([poi.lat, poi.lng], {
-    icon: icon,
-    alt: poi.name,
-  }).addTo(map);
-  marker.bindPopup(`
-    <div class="popup-inner">
-      <div class="popup-cat" style="color:${CAT_COLORS[poi.cat]}">${CAT_LABELS[poi.cat]}</div>
-      <div class="popup-name">${poi.name}</div>
-      <div class="popup-desc">${poi.desc}</div>
-      <div class="popup-drive">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 17h2l.64-2.54a6 6 0 00-1.22-5.56L18 6H6L3.58 8.9a6 6 0 00-1.22 5.56L3 17h2"/><circle cx="7" cy="17" r="2"/><circle cx="17" cy="17" r="2"/></svg>
-        ${poi.drive} from property
-      </div>
-    </div>
-  `);
-
-  marker.on('click', () => {
-    setActivePoi(poi.id);
-    drawLine(poi);
-  });
-
-  poiMarkers[poi.id] = marker;
-});
-
-let activeLine = null;
-function drawLine(poi) {
-  if (activeLine) map.removeLayer(activeLine);
-  activeLine = L.polyline(
-    [[PROPERTY.lat, PROPERTY.lng], [poi.lat, poi.lng]],
-    { color: CAT_COLORS[poi.cat], weight: 1.5, dashArray: '6 5', opacity: 0.45 }
-  ).addTo(map);
-}
-
-function clearLine() {
-  if (activeLine) { map.removeLayer(activeLine); activeLine = null; }
-}
-
-/* ═══════════════════════════════════════
-   SIDEBAR
-   ═══════════════════════════════════════ */
-const poiList = document.getElementById('poiList');
-let activePoiId = null;
-let activeFilter = 'all';
-
-function renderPoiList(filter) {
-  poiList.innerHTML = '';
-  const filtered = filter === 'all' ? POIS : POIS.filter(p => p.cat === filter);
-
-  filtered.forEach((poi, i) => {
-    const el = document.createElement('div');
-    el.className = 'map-poi-item' + (poi.id === activePoiId ? ' active' : '');
-    el.dataset.id = poi.id;
-    el.setAttribute('role', 'option');
-    el.setAttribute('tabindex', '0');
-    el.setAttribute('aria-selected', poi.id === activePoiId ? 'true' : 'false');
-    el.setAttribute('aria-label', `${poi.name}, ${CAT_LABELS[poi.cat]}, ${poi.drive} drive`);
-    el.innerHTML = `
-      <div class="map-poi-dot" style="background:${CAT_COLORS[poi.cat]}" aria-hidden="true"></div>
-      <div class="map-poi-info">
-        <div class="map-poi-name">${poi.name}</div>
-        <div class="map-poi-meta">${CAT_LABELS[poi.cat]}</div>
-      </div>
-      <div class="map-poi-drive" aria-hidden="true">${poi.drive}</div>
-    `;
-    function activateItem() {
-      const marker = poiMarkers[poi.id];
-      map.flyTo([poi.lat, poi.lng], 14, { duration: 1.2 });
-      setTimeout(() => marker.openPopup(), 600);
-      setActivePoi(poi.id);
-      drawLine(poi);
-    }
-    el.addEventListener('click', activateItem);
-    el.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); activateItem(); }
-      if (e.key === 'ArrowDown') {
-        e.preventDefault();
-        const next = el.nextElementSibling;
-        if (next) next.focus();
-      }
-      if (e.key === 'ArrowUp') {
-        e.preventDefault();
-        const prev = el.previousElementSibling;
-        if (prev) prev.focus();
-      }
-    });
-    poiList.appendChild(el);
-  });
-
-  POIS.forEach(poi => {
-    const marker = poiMarkers[poi.id];
-    if (filter === 'all' || poi.cat === filter) {
-      if (!map.hasLayer(marker)) marker.addTo(map);
-    } else {
-      if (map.hasLayer(marker)) map.removeLayer(marker);
-    }
-  });
-}
-
-function setActivePoi(id) {
-  activePoiId = id;
-  document.querySelectorAll('.map-poi-item').forEach(el => {
-    const isActive = el.dataset.id === id;
-    el.classList.toggle('active', isActive);
-    el.setAttribute('aria-selected', isActive ? 'true' : 'false');
-  });
-}
-
-// Filter buttons
-document.querySelectorAll('.map-filter-btn').forEach(btn => {
-  btn.addEventListener('click', () => {
-    document.querySelectorAll('.map-filter-btn').forEach(b => {
-      b.classList.remove('active');
-      b.setAttribute('aria-pressed', 'false');
-    });
-    btn.classList.add('active');
-    btn.setAttribute('aria-pressed', 'true');
-    activeFilter = btn.dataset.cat;
-    clearLine();
-    activePoiId = null;
-    renderPoiList(activeFilter);
-
-    const visible = POIS.filter(p => activeFilter === 'all' || p.cat === activeFilter);
-    if (visible.length) {
-      const bounds = L.latLngBounds(visible.map(p => [p.lat, p.lng]));
-      bounds.extend([PROPERTY.lat, PROPERTY.lng]);
-      map.flyToBounds(bounds, { padding: [60, 60], duration: 1 });
-    }
-  });
-});
-
-document.getElementById('mapHomeBtn').addEventListener('click', () => {
-  clearLine();
-  activePoiId = null;
-  renderPoiList(activeFilter);
-  map.flyTo([PROPERTY.lat, PROPERTY.lng], 12, { duration: 1.2 });
-  setTimeout(() => propMarker.openPopup(), 600);
-});
-
-renderPoiList('all');
-
-const mapObserver = new IntersectionObserver((entries) => {
-  if (entries[0].isIntersecting) {
-    setTimeout(() => map.invalidateSize(), 200);
-  }
-}, { threshold: 0.1 });
-mapObserver.observe(document.querySelector('.map-section'));
-
 /* ═══════════════════════════════════════
    NAV + SCROLL + REVEAL
    ═══════════════════════════════════════ */
